@@ -24,7 +24,7 @@ public class Posts_Chapter07 {
 			con = DriverManager.getConnection(
 					"jdbc:mysql://localhost/challenge_java",
 					"root",
-					"***"
+					"178Mania@"
 					);
 			System.out.println("データベース接続成功");
 
@@ -47,7 +47,7 @@ public class Posts_Chapter07 {
 			int rowCnt = 0;
 			for(String[] post : postsList) {
 				int user_id = Integer.parseInt(post[0]);
-				String posted_at = post[1];
+				Date posted_at = post[1];
 				String post_content = post[2];
 				int likes = Integer.parseInt(post[3]);
 
