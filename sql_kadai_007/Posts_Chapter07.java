@@ -24,7 +24,7 @@ public class Posts_Chapter07 {
 			con = DriverManager.getConnection(
 					"jdbc:mysql://localhost/challenge_java",
 					"root",
-					"178Mania@"
+					"***"
 					);
 			System.out.println("データベース接続成功");
 
