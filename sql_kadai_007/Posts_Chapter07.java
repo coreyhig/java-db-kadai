@@ -1,12 +1,12 @@
 package sql_kadai_007;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 
 public class Posts_Chapter07 {
 	public static void main(String[] args) {
@@ -24,7 +24,7 @@ public class Posts_Chapter07 {
 			con = DriverManager.getConnection(
 					"jdbc:mysql://localhost/challenge_java",
 					"root",
-					"***"
+					"178Mania@"
 					);
 			System.out.println("データベース接続成功");
 
@@ -45,22 +45,26 @@ public class Posts_Chapter07 {
 			insertstatement = con.prepareStatement(sql);
 
 			int rowCnt = 0;
+			System.out.println("レコード追加を実行します：" );
 			for(String[] post : postsList) {
 				int user_id = Integer.parseInt(post[0]);
-				Date posted_at = post[1];
+				Date posted_at = Date.valueOf(post[1]) ;
 				String post_content = post[2];
 				int likes = Integer.parseInt(post[3]);
 
 				insertstatement.setInt(1, user_id);
-				insertstatement.setString(2, posted_at);
+				insertstatement.setDate(2, posted_at);
 				insertstatement.setString(3, post_content);
 				insertstatement.setInt(4, likes);
+				insertstatement.executeUpdate();
+				rowCnt++;
 
-				System.out.println("レコード追加：" + insertstatement.toString());
-				rowCnt = insertstatement.executeUpdate();
-				System.out.println(rowCnt + "件のレコードが追加されました");
 			}	
+
+			System.out.println(rowCnt + "件のレコードが追加されました");
+			
 			String searchsql = "SELECT * FROM posts WHERE user_id = 1002";
+			System.out.println("ユーザーIDが1002のレコードを検索しました");
 			ResultSet result = statement.executeQuery(searchsql);
 			while (result.next()) {
 			    Date posted_at = result.getDate("posted_at");
@@ -69,11 +73,10 @@ public class Posts_Chapter07 {
 			    System.out.println(result.getRow() + "件目:投稿日時=" + posted_at + "/投稿内容=" + post_content + "/いいね数=" + likes);
 			}
 
-
 			// ResultSetを全て使用し終わった後にstatementをクローズ
 			result.close();
 			statement.close();
-		}catch(SQLException e) {
+		}catch(SQLException e ){
 			System.out.println("エラー発生:" + e.getMessage());
 		}finally {
 			if(insertstatement != null) {
